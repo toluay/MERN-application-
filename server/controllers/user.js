@@ -6,6 +6,7 @@ import UserModal from "../models/user.js";
 const secret = 'test';
 
 export const signin = async (req, res) => {
+  console.log(req.body);
   const { email, password } = req.body;
 
   try {
@@ -26,7 +27,7 @@ export const signin = async (req, res) => {
 };
 
 export const signup = async (req, res) => {
-  const { email, password, firstName, lastName } = req.body;
+  const {firstName, lastName, email, password} = req.body;
 
   try {
     const oldUser = await UserModal.findOne({ email });
@@ -40,6 +41,8 @@ export const signup = async (req, res) => {
     const token = jwt.sign( { email: result.email, id: result._id }, secret, { expiresIn: "1h" } );
 
     res.status(201).json({ result, token });
+    console.log(JSON.stringify(req.body));
+   
   } catch (error) {
     res.status(500).json({ message: "Something went wrong" });
     
