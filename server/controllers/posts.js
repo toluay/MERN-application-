@@ -20,7 +20,7 @@ export const getPosts = async (req, res) => {
     } catch (error) {    
         res.status(404).json({ message: error.message });
     }
-}
+};
 
 export const getPostsBySearch = async (req, res) => {
     const { searchQuery, tags } = req.query;
@@ -34,7 +34,7 @@ export const getPostsBySearch = async (req, res) => {
     } catch (error) {    
         res.status(404).json({ message: error.message });
     }
-}
+};
 export const createPost = async (req, res) => {
 
     const post = req.body;
@@ -48,7 +48,7 @@ export const createPost = async (req, res) => {
         res.status(409).json({message:error.message})
     }
 
-}
+};
 export const getPost = async (req, res) => { 
     const { id } = req.params;
 
@@ -59,7 +59,7 @@ export const getPost = async (req, res) => {
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
-}
+};
 export const updatePost = async (req, res) => {
     const { id } = req.params;
     const { title, message, creator, selectedFile, tags } = req.body;
@@ -71,7 +71,7 @@ export const updatePost = async (req, res) => {
     await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
 
     res.json(updatedPost);
-}
+};
 export const deletePost = async (req, res) => {
     const { id } = req.params;
 
@@ -80,7 +80,7 @@ export const deletePost = async (req, res) => {
     await PostMessage.findByIdAndRemove(id);
 
     res.json({ message: "Post deleted successfully." });
-}
+};
 
 export const likePost = async (req, res) => {
     const { id } = req.params;
@@ -102,6 +102,18 @@ export const likePost = async (req, res) => {
     }
     const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
     res.status(200).json(updatedPost);
-}
+};
+export const commentPost = async (req, res) => {
+    const { id } = req.params;
+    const { value } = req.body;
+
+    const post = await PostMessage.findById(id);
+
+    post.comments.push(value);
+
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
+
+    res.json(updatedPost);
+};
 
 export default router; 
