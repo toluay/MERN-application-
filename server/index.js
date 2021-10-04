@@ -20,10 +20,9 @@ app.get('/',(req, res)=>{
 app.use('/posts', postRoutes);
 app.use("/user", userRouter);
 
-const CONNECTION_URL ='mongodb+srv://newuser:System01@cluster0.4henh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+const CONNECTION_URL =process.env.MONGOOSE_URL ||'mongodb://localhost:27017';
 
-const PORT = process.env.PORT|| 5000;
-
+const PORT = 5000;
 mongoose.connect(CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => app.listen(PORT, () => console.log(`Server Running on Port: http://localhost:${PORT}`)))
   .catch((error) => console.log(`${error} did not connect`));
